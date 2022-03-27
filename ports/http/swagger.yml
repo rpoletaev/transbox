@@ -1,0 +1,93 @@
+swagger: "2.0"
+info:
+  description: >
+
+    Entities service
+      
+      * Create Entity
+      * Fetch Entities list
+
+  title: Entity service
+  version: 0.0.1
+consumes:
+  - application/json
+produces:
+  - application/json
+schemes:
+  - http
+basePath: /
+securityDefinitions:
+  isRegistered:
+    type: apiKey
+    in: header
+    name: X-Auth-Key
+  isConfirmed:
+    type: apiKey
+    in: header
+    name: X-Auth-Key
+paths:
+  /entities:
+    get:
+      summary: >
+
+        Get list of entities
+
+      operationId: getEntities
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/EntitiesResponse"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+
+    post:
+      summary: >
+
+        Creates new Entity
+
+      operationId: createEntity
+      parameters:
+        - name: entity
+          in: body
+          schema:
+            $ref: "#/definitions/NewEntity"
+      responses:
+        201:
+          description: entity created
+        400:
+          description: bad request
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: internal error
+          schema:
+            $ref: "#/definitions/Error"
+        
+definitions:
+  
+  EntitiesResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+
+  NewEntity:
+    type: object
+    required:
+      - name
+    properties: 
+      name:
+        type: string
+
+  Error:
+    type: object
+    properties: 
+      code:
+        type: integer
+      message:
+        type: string
